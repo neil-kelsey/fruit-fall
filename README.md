@@ -1,6 +1,7 @@
 # Fruit Fall (Godot 4.7)
 
-Ukiyo-e / woodblock fruit-merging puzzle. Portrait 720×1280, letterboxed on wider screens.
+Ukiyo-e / woodblock fruit-merging puzzle. Portrait 720×1280 design, centred with the paper background filling any extra space
+(stretch aspect `expand`, so tall phones and wide tablets get no black bars). Version 0.2.0.
 
 ## Run
 - **Editor:** `godot -e --path /workspace/fruit-fall-godot` then F5 (main scene `scenes/main.tscn`).
@@ -8,6 +9,11 @@ Ukiyo-e / woodblock fruit-merging puzzle. Portrait 720×1280, letterboxed on wid
 - **Linux build:** `export/linux/FruitFall.x86_64` (single file, pck embedded).
 - **Web build:** serve `export/web/` with any static server and open `index.html`
   (e.g. `cd export/web && python3 -m http.server 8000`). Single-threaded build, so no COOP/COEP headers needed.
+- **Android APK:** preset "Android" (com.veilmoth.fruitfall, portrait, arm64-v8a + armeabi-v7a, min SDK 24).
+  Release-signed with a keystore kept outside the repo (box: `~/keystores/fruit-fall.keystore`), passed via env vars:
+  `GODOT_ANDROID_KEYSTORE_RELEASE_PATH/_USER/_PASSWORD`, then
+  `godot --headless --path . --export-release "Android" export/android/fruit-fall-v0.2.0.apk`.
+  Bump `version/code` + `version/name` in the preset and `application/config/version` for each release.
 - **Re-export:** `godot --headless --path . --export-release "Linux" export/linux/FruitFall.x86_64`
   and `--export-release "Web" export/web/index.html`.
 

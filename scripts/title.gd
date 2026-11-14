@@ -17,7 +17,7 @@ class Art extends Control:
 	func _draw() -> void:
 		var font: Font = main.font
 		# sky + sun
-		draw_rect(Rect2(0, 0, 720, 300), Color("f0dcb4"))
+		draw_rect(Rect2(-600, -900, 1920, 1200), Color("f0dcb4"))
 		draw_circle(Vector2(140, 96), 50, Color("d6453d"), true, -1.0, true)
 		# kasumi mist bands
 		for b in [[Vector2(-20, 60), 300.0], [Vector2(380, 120), 360.0], [Vector2(60, 170), 260.0]]:

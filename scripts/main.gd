@@ -43,6 +43,7 @@ var stats := {"drops": 0, "merges": 0, "max_tier": 0, "fast": 0}
 var autotest := false
 var _guide_shapes: Array[CircleShape2D] = []
 var _held_keys := 0.0
+var ui: CanvasLayer
 
 
 func _ready() -> void:
@@ -64,10 +65,13 @@ func _ready() -> void:
 	add_child(camera)
 	camera.make_current()
 
+	# Oversized so the paper also fills the extra margin on taller/wider screens (stretch aspect "expand").
 	var bg := ColorRect.new()
-	bg.position = Vector2(-40, -60)
-	bg.size = Vector2(800, 1400)
-	bg.material = washi_mat
+	bg.position = Vector2(-600, -900)
+	bg.size = Vector2(1920, 3080)
+	var bg_mat: ShaderMaterial = washi_mat.duplicate()
+	bg_mat.set_shader_parameter("size", bg.size)
+	bg.material = bg_mat
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bg)
 	var sea := ColorRect.new()
@@ -97,7 +101,7 @@ func _ready() -> void:
 		cs.radius = r
 		_guide_shapes.append(cs)
 
-	var ui := CanvasLayer.new()
+	ui = CanvasLayer.new()
 	add_child(ui)
 	hud = Control.new()
 	hud.set_script(load("res://scripts/hud.gd"))
@@ -137,6 +141,8 @@ func _ready() -> void:
 	AudioServer.add_bus_effect(0, AudioEffectHardLimiter.new())
 	_apply_mute()
 	show_title()
+	get_viewport().size_changed.connect(_fit_screen)
+	_fit_screen()
 	if autotest:
 		_autotest.call_deferred()
 
@@ -498,6 +504,14 @@ func _load_cfg() -> void:
 	if cfg.load(SAVE_PATH) == OK:
 		best = int(cfg.get_value("game", "best", 0))
 		muted = bool(cfg.get_value("game", "muted", false))
+
+
+## Centre the 720x1280 design inside whatever the viewport expanded to (phones taller than 16:9, tablets wider).
+func _fit_screen() -> void:
+	var vs := get_viewport().get_visible_rect().size
+	var off := ((vs - Vector2(Layout.W, Layout.H)) * 0.5).max(Vector2.ZERO).floor()
+	camera.position = -off
+	ui.offset = off
 
 
 func _save_cfg() -> void:

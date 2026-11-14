@@ -20,7 +20,7 @@ class Art extends Control:
 
 	func _draw() -> void:
 		var u: float = go.unroll
-		draw_rect(Rect2(0, 0, 720, 1280), Color(0.06, 0.08, 0.18, 0.5 * minf(1.0, u * 2.0)))
+		draw_rect(Rect2(-1200, -1200, 3120, 3680), Color(0.06, 0.08, 0.18, 0.5 * minf(1.0, u * 2.0)))
 		var h := 40.0 + 600.0 * Dropper.ease_out(u)
 		var c := Vector2(360, 640)
 		var paper := Rect2(c.x - 250, c.y - h * 0.5, 500, h)
